@@ -20,6 +20,14 @@ const index = (req, res) => {
         filteredPosts = filteredPosts.slice(0, limit)
     }
 
+    // se il post non esiste (quindi l'elenco dopo i filtri è vuoto), ritorno l'errore
+    if (filteredPosts.length === 0) {
+        res.status(404).json({
+            error: 'Post not found',
+            message: 'Il post non è stato trovato'
+        })
+    }
+
     res.json(filteredPosts)     // rispondo con un json che contiene l'elenco intero, o se si entra nell'if, quello filtrato
 }
 
