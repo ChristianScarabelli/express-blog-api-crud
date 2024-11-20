@@ -33,23 +33,28 @@ const index = (req, res) => {
 
 // funzione rotta show => visualizzare un elemento 
 const show = (req, res) => {
-    const id = parseInt(req.params.id)
-    console.log(`Ecco il post con id: ${id}`)
+    const param = req.params.id // salvo in una variabile il parametro, che può essere sia ID che slug
+    const id = parseInt(param)      // recupero in una variabile il parametro del post richiesto trasformato in numero
 
-    const post = posts.find((post) => post.id === id)
-    let result = post
+    console.log(`Ecco il post con parametro: ${param}`)
+
+    let post      // inizializzo una variabile che cambierà e verrà ritornata in json in base alla ricerca
+
+    if (!isNaN(id) && id > 0) {    // se il parametro scritto è un numero valido cerco per id
+        post = posts.find((post) => post.id === id)  // cerco nell'array posts l'elemento post con ID uguale a quello della richiesta con query string
+    } else {      // altrimenti cerco per lo slug inserito
+        post = posts.find((post) => post.slug === param)
+    }
 
     if (!post) {        // se il post non esiste
         console.log('post non trovato')
 
-        res.status(404) // imposto l'errore
-        result = {   // se non esiste ritorno un oggetto con gli errori
+        res.status(404).json({      // se non esiste ritorno un json con gli errori
             error: 'Post not found',
             message: 'Il post non è stato trovato'
-        }
+        })
     }
-
-    res.json(result)    // ritorno un json con l'elemento selezionato, altrimenti ritorno l'errore
+    res.json(post)    // ritorno un json con l'elemento post selezionato per id o per slug, altrimenti ritorno l'errore
 }
 
 // funzione rotta store => creare un nuovo elemento
@@ -71,10 +76,16 @@ const modify = (req, res) => {
 
 // funzione rotta destroy => eliminare un elemento
 const destroy = (req, res) => {
-    const id = parseInt(req.params.id)
+    const param = req.params.id     // il parametro può essere un ID o uno slug
+    const id = parseInt(param)      // converto il parametro in un numero e lo salvo nella variabile id
 
-    // recupero in una variabile l'indice dell'id corrispondente al post
-    const postIndex = posts.findIndex((post) => post.id === id)
+    let postIndex
+
+    if (!isNaN(id) && id > 0) {     // se l'id è un numero valido e >0,  recupero nella variabile l'indice dell'id corrispondente al post
+        postIndex = posts.findIndex((post) => post.id === id)
+    } else {
+        postIndex = posts.findIndex((post) => post.slug === param) // altrimenti guardo se il parametro inserito è === allo slug
+    }
 
     // se l'indice non è compreso imposto l'errore
     if (postIndex === -1) {
@@ -86,13 +97,12 @@ const destroy = (req, res) => {
         })
     }
 
-    // rimuovo il post selezionato corrispondente all'id
+    // rimuovo il post selezionato in base al parametro (id o slug)
     posts.splice(postIndex, 1)
 
-    console.log(posts)
+    console.log(posts) // post rimanenti dopo l'eliminazione
 
     res.sendStatus(204) // rispondo con esito positivo ma senza contenuto
-
 }
 
 module.exports = { index, show, store, update, modify, destroy }
