@@ -8,9 +8,10 @@ const index = (req, res) => {
 
     // filtro i posts con il valore tag che viene passato in query string
     if (req.query.tags) {
-        filteredPosts = posts.filter((post) => {
-            return post.tags.includes(req.query.tags.toLowerCase())   // se il valore tags inserito nella query filtro l'array principale e lo ritorno
-        })
+        const queryTags = req.query.tags.toLowerCase().split(',')  // metto il valore in minuscolo e separato dagli altri elementi dell'array in una variabile
+        filteredPosts = filteredPosts.filter(post =>    // verifico se almeno uno dei tag della query è presente nei tag del post
+            post.tags.some(tag => queryTags.includes(tag.toLowerCase()))
+        )
     }
 
     // limito i post da vedere in elenco
@@ -24,12 +25,23 @@ const index = (req, res) => {
 
 // funzione rotta show => visualizzare un elemento 
 const show = (req, res) => {
-    const id = req.params.id
-    console.log(`Ecco la pizza con id: ${id}`)
+    const id = parseInt(req.params.id)
+    console.log(`Ecco il post con id: ${id}`)
 
     const post = posts.find((post) => post.id === id)
+    let result = post
 
-    res.json(post)
+    if (!post) {        // se il post non esiste
+        console.log('post non trovato')
+
+        res.status(404) // imposto l'errore
+        result = {   // se non esiste ritorno un oggetto con gli errori
+            error: 'Post not found',
+            message: 'Il post non è stato trovato'
+        }
+    }
+
+    res.json(result)    // ritorno un json con l'elemento selezionato, altrimenti ritorno l'errore
 }
 
 // funzione rotta store => creare un nuovo elemento
