@@ -51,20 +51,37 @@ const store = (req, res) => {
 
 // funzione rotta update => modificare interamente un elemento
 const update = (req, res) => {
-    const id = req.params.id
+    const id = parseInt(req.params.id)
     res.send(`Modifico interamente il post con id: ${id}`)
 }
 
 // funzione rotta modify => modificare parzialmente un elemento
 const modify = (req, res) => {
-    const id = req.params.id
+    const id = parseInt(req.params.id)
     res.send(`Modifico parzialmente il post con id: ${id}`)
 }
 
 // funzione rotta destroy => eliminare un elemento
 const destroy = (req, res) => {
-    const id = req.params.id
-    res.send(`Elimino il post con id: ${id}`)
+    const id = parseInt(req.params.id)
+
+    // recupero in una variabile l'indice dell'id corrispondente al post
+    const postIndex = posts.findIndex((post) => post.id === id)
+
+    // se l'indice non è compreso imposto l'errore
+    if (postIndex === -1) {
+        res.status(404)
+
+        return res.json({
+            error: 'Post not found',
+            message: 'post selected not found',
+        })
+    }
+
+    // rimuovo il post selezionato corrispondente all'id
+    posts.splice(postIndex, 1)
+
+    res.sendStatus(204) // rispondo con esito positivo ma senza contenuto
 }
 
 module.exports = { index, show, store, update, modify, destroy }
