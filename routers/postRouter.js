@@ -13,7 +13,7 @@ router.get('/', postController.index)
 router.get('/:id', postController.show)
 
 // rotta Store => creare un nuovo elemento
-router.post('/', postController.show)
+router.post('/', postController.store)
 
 // rotta Update => modificare interamente un elemento
 router.put('/:id', postController.update)
