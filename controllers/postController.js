@@ -81,7 +81,10 @@ const destroy = (req, res) => {
     // rimuovo il post selezionato corrispondente all'id
     posts.splice(postIndex, 1)
 
+    console.log(posts)
+
     res.sendStatus(204) // rispondo con esito positivo ma senza contenuto
+
 }
 
 module.exports = { index, show, store, update, modify, destroy }
