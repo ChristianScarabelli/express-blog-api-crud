@@ -132,7 +132,30 @@ const update = (req, res) => {
 // funzione rotta modify => modificare parzialmente un elemento
 const modify = (req, res) => {
     const id = parseInt(req.params.id)
-    res.send(`Modifico parzialmente il post con id: ${id}`)
+    // res.send(`Modifico parzialmente il post con id: ${id}`)
+
+    const post = posts.find((post) => post.id === id)  // cerco il post con id corrispondente al parametro ricevuto
+
+    if (!post) {     // se il post non esiste, ritorno l'errore
+        res.status(404)
+
+        return res.json({
+            error: 'post not found',
+            message: 'Post not founded.',
+        })
+    }
+
+    // validazione dati del body
+    // update del post con i dati della body request
+    const { title, slug, content, image, tags } = req.body
+
+    if (title) post.title = title   // se il parametro title esiste, il title del post sarà il title passato nella request
+    if (slug) post.slug = slug
+    if (content) post.content = content
+    if (image) post.image = image
+    if (tags) post.tags = tags
+
+    res.json(post)      // rispondo con il json del nuovo post
 }
 
 // funzione rotta destroy => eliminare un elemento
