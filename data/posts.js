@@ -49,3 +49,14 @@ const posts = [
 ];
 
 module.exports = posts;
+
+
+/* risorsa da creare
+{
+    "title": "Lasagne vegane",
+    "slug": "lasagne-vegane",
+    "content": "Le lasagne con ragù di ceci e verdure, sono un primo piatto vegano dal gusto intenso e appetitoso. I sapori decisi dei ceci, uniti alla cremosità della besciamella, fanno nascere un piatto memorabile e gustoso, che sicuramente saprà piacevolmente conquistare i palati dei vostri invitati.Per chi non segue questo tipo di alimentazione, a volte è difficile immaginare che nella cucina vegana ci sia così tanto spazio per piatti gustosi e succulenti, proprio come queste lasagne: chi le ha assaggiate, tra i miei amici e parenti, spesso non credeva alle proprie orecchie quando svelavo che il piatto era interamente vegetale! Potete stare tranquilli, con questo piatto non si sentirà la mancanza di altro: gli ingredienti di qualità che faranno parte del ripieno parleranno da soli.",
+    "image": "/imgs/posts/lasagne-vegane.jpg",
+    "tags": ["Ricette vegane", "Ricette al forno"]
+}
+*/

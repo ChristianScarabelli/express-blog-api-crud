@@ -59,7 +59,9 @@ const show = (req, res) => {
 
 // funzione rotta store => creare un nuovo elemento
 const store = (req, res) => {
-    res.send('Creo un nuovo post')
+    const { title, slug, content, image, tags } = req.body   // destrutturo in una variabile i dati in arrivo con la body request
+    console.log(req.body)
+
 }
 
 // funzione rotta update => modificare interamente un elemento
@@ -106,3 +108,33 @@ const destroy = (req, res) => {
 }
 
 module.exports = { index, show, store, update, modify, destroy }
+
+
+// funzione per validare i dati, che prende come parametro la request
+const validateData = (req) => {
+    const { title, slug, content, image, tags } = req.body
+
+    let errors = []
+
+    if (!title) {       // se i vari parametri non esistono, creo l'errore e lo pusho nell'array vuoto di errori
+        errors.push('title is required')
+    }
+
+    if (!slug) {
+        errors.push('slug is required')
+    }
+
+    if (!content) {
+        errors.push('content is required')
+    }
+
+    if (!image) {
+        errors.push('image is required')
+    }
+
+    if (!tags) {
+        errors.push('tags are required')
+    }
+
+    return errors
+}

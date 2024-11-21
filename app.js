@@ -10,6 +10,9 @@ const port = 3000
 // rendo accessibile al server la directory 'public'
 app.use(express.static('public'))
 
+// permetto di accettare file json nella body request
+app.use(express.json())
+
 // creo la rotta principale del mio server
 app.get('/', (req, res) => {
     res.send('server del mio blog')
