@@ -1,4 +1,5 @@
 const posts = require('../data/posts.js')    // richiamo l'array di oggetti della risorsa post quì dove si svolgono le funzioni
+let lastIndex = posts.at(-1).id        // variabile globale che racchiude l'id dell'ultimo elemento dell'array posts
 
 // funzione rotta Index => visualizzare tutti gli elementi
 const index = (req, res) => {
@@ -60,8 +61,33 @@ const show = (req, res) => {
 // funzione rotta store => creare un nuovo elemento
 const store = (req, res) => {
     const { title, slug, content, image, tags } = req.body   // destrutturo in una variabile i dati in arrivo con la body request
-    console.log(req.body)
+    // console.log(req.body)
 
+    const errors = validateData(req) // Validazione
+
+    if (errors.lenght > 0) {  // se l'array di stringhe di errori non è vuoto, c'è l'errore e lo imposto
+        res.status(400)
+
+        return res.json({
+            error: 'Invalid request',
+            messages: errors,
+        })
+    }
+
+    lastIndex++     // incremento l'id così al nuovo oggetto ne verrà assegnato uno in sequenza
+
+    const newPost = {
+        title,
+        slug,
+        id: lastIndex,      // associo alla proprietà id il valore incrementato 
+        content,
+        image,
+        tags
+    }
+
+    posts.push(newPost)     // aggiungo il nuovo post all'array principale
+    res.status(201).send(newPost)       // invio status positivo e il nuovo post
+    // console.log(newPost)
 }
 
 // funzione rotta update => modificare interamente un elemento
