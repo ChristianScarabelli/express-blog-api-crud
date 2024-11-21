@@ -93,7 +93,40 @@ const store = (req, res) => {
 // funzione rotta update => modificare interamente un elemento
 const update = (req, res) => {
     const id = parseInt(req.params.id)
-    res.send(`Modifico interamente il post con id: ${id}`)
+    // res.send(`Modifico interamente il post con id: ${id}`)
+    const errors = validateData(req)     // validazione
+
+    if (errors.lenght > 0) {
+        res.status(400)
+
+        return res.json({
+            error: 'invalid request!',
+            message: errors
+        })
+    }
+
+    const post = posts.find((post) => post.id === id)  // cerco il post con id corrispondente al parametro ricevuto
+
+    if (!post) {     // se il post non esiste, ritorno l'errore
+        res.status(404)
+
+        return res.json({
+            error: 'post not found',
+            message: 'Post not founded.',
+        })
+    }
+
+    // validazione dati del body
+    // update del post con i dati della body request
+    const { title, slug, content, image, tags } = req.body
+
+    post.title = title
+    post.slug = slug
+    post.content = content
+    post.image = image
+    post.tags = tags
+
+    res.json(post)      // rispondo con il json del nuovo post
 }
 
 // funzione rotta modify => modificare parzialmente un elemento
