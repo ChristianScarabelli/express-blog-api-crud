@@ -65,7 +65,7 @@ const store = (req, res) => {
 
     const errors = validateData(req) // Validazione
 
-    if (errors.lenght > 0) {  // se l'array di stringhe di errori non è vuoto, c'è l'errore e lo imposto
+    if (errors.length > 0) {  // se l'array di stringhe di errori non è vuoto, c'è l'errore e lo imposto
         res.status(400)
 
         return res.json({
@@ -96,7 +96,7 @@ const update = (req, res) => {
     // res.send(`Modifico interamente il post con id: ${id}`)
     const errors = validateData(req)     // validazione
 
-    if (errors.lenght > 0) {
+    if (errors.length > 0) {
         res.status(400)
 
         return res.json({
@@ -112,7 +112,7 @@ const update = (req, res) => {
 
         return res.json({
             error: 'post not found',
-            message: 'Post not founded.',
+            message: 'Post not found.',
         })
     }
 
@@ -120,11 +120,11 @@ const update = (req, res) => {
     // update del post con i dati della body request
     const { title, slug, content, image, tags } = req.body
 
-    post.title = title
-    post.slug = slug
-    post.content = content
-    post.image = image
-    post.tags = tags
+    if (title) post.title = title   // se il parametro title esiste, il title del post sarà il title passato nella request
+    if (slug) post.slug = slug
+    if (content) post.content = content
+    if (image) post.image = image
+    if (tags) post.tags = tags
 
     res.json(post)      // rispondo con il json del nuovo post
 }
@@ -198,24 +198,28 @@ const validateData = (req) => {
 
     let errors = []
 
-    if (!title) {       // se i vari parametri non esistono, creo l'errore e lo pusho nell'array vuoto di errori
+    // se i vari parametri non esistono, sono diversi da stringhe, hanno spazio ai lati o  sono campi vuoti,
+    // creo l'errore e lo pusho nell'array vuoto di errori
+    if (!title || typeof title !== 'string' || title.trim().length === 0) {
         errors.push('title is required')
     }
 
-    if (!slug) {
+    if (!slug || typeof slug !== 'string' || slug.trim().length === 0) {
         errors.push('slug is required')
     }
 
-    if (!content) {
+    if (!content || typeof content !== 'string' || content.trim().length === 0) {
         errors.push('content is required')
     }
 
-    if (!image) {
+    if (!image || typeof image !== 'string' || image.trim().length === 0) {
         errors.push('image is required')
     }
 
-    if (!tags) {
-        errors.push('tags are required')
+    // se l'array di tags non è un array
+    // se ogni tag dell'array tags è diverso da stringa
+    if (!tags || !Array.isArray(tags) || tags.length === 0 || !tags.every(tag => typeof tag === 'string')) {
+        errors.push('tags are required');
     }
 
     return errors
