@@ -120,11 +120,11 @@ const update = (req, res) => {
     // update del post con i dati della body request
     const { title, slug, content, image, tags } = req.body
 
-    if (title) post.title = title   // se il parametro title esiste, il title del post sarà il title passato nella request
-    if (slug) post.slug = slug
-    if (content) post.content = content
-    if (image) post.image = image
-    if (tags) post.tags = tags
+    post.title = title   // se il parametro title esiste, il title del post sarà il title passato nella request
+    post.slug = slug
+    post.content = content
+    post.image = image
+    post.tags = tags
 
     res.json(post)      // rispondo con il json del nuovo post
 }
@@ -149,7 +149,7 @@ const modify = (req, res) => {
     // update del post con i dati della body request
     const { title, slug, content, image, tags } = req.body
 
-    if (title) post.title = title   // se il parametro title esiste, il title del post sarà il title passato nella request
+    if (title) post.title = title   // se il parametro title esiste, il title del post sarà il title passato nella request, perchè possono arrivare dati parziali e si corre il rischio di undefined
     if (slug) post.slug = slug
     if (content) post.content = content
     if (image) post.image = image
