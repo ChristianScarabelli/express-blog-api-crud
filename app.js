@@ -4,7 +4,8 @@
 const express = require('express')      // richiamo express
 const postsRouter = require('./routers/postRouter.js')      // importo il router delle rotte della risorsa posts
 const errorsHandler = require('./middlewares/errorsHandler.js')  // importo il middleware di gestione degli errori
-const notFound = require('./middlewares/notFound.js')
+const notFound = require('./middlewares/notFound.js')  // importo il middleware di gestione errore 404
+const trimStrings = require('./middlewares/trimStrings.js')
 const app = express()
 const port = 3000
 
@@ -14,6 +15,8 @@ app.use(express.static('public'))
 
 // permetto di accettare file json nella body request
 app.use(express.json())
+// utilizzo il middleware per trimmare le stringhe globalmente, prima delle rotte ma dopo che posso accettare le body request in formato json
+app.use(trimStrings)
 
 // creo la rotta principale del mio server
 app.get('/', (req, res) => {

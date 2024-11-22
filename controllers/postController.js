@@ -200,19 +200,19 @@ const validateData = (req) => {
 
     // se i vari parametri non esistono, sono diversi da stringhe, hanno spazio ai lati o  sono campi vuoti,
     // creo l'errore e lo pusho nell'array vuoto di errori
-    if (!title || typeof title !== 'string' || title.trim().length === 0) {
+    if (!title || typeof title !== 'string') {
         errors.push('title is required')
     }
 
-    if (!slug || typeof slug !== 'string' || slug.trim().length === 0) {
+    if (!slug || typeof slug !== 'string') {
         errors.push('slug is required')
     }
 
-    if (!content || typeof content !== 'string' || content.trim().length === 0) {
+    if (!content || typeof content !== 'string') {
         errors.push('content is required')
     }
 
-    if (!image || typeof image !== 'string' || image.trim().length === 0) {
+    if (!image || typeof image !== 'string') {
         errors.push('image is required')
     }
 
