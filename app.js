@@ -4,6 +4,7 @@
 const express = require('express')      // richiamo express
 const postsRouter = require('./routers/postRouter.js')      // importo il router delle rotte della risorsa posts
 const errorsHandler = require('./middlewares/errorsHandler.js')  // importo il middleware di gestione degli errori
+const notFound = require('./middlewares/notFound.js')
 const app = express()
 const port = 3000
 
@@ -24,6 +25,8 @@ app.use('/posts', postsRouter)
 
 // uso il middleware di errore globalmente e dopo tutte le rotte
 app.use(errorsHandler)
+// uso il middleware di errore 404 globalmente, dopo tutte le rotte e dopo l'altro middleware di errore
+app.use(notFound)
 
 // metto il mio server in ascolto della porta
 app.listen(port, () => {
