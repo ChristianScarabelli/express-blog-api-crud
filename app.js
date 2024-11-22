@@ -3,6 +3,7 @@
 
 const express = require('express')      // richiamo express
 const postsRouter = require('./routers/postRouter.js')      // importo il router delle rotte della risorsa posts
+const errorsHandler = require('./middlewares/errorsHandler.js')  // importo il middleware di gestione degli errori
 const app = express()
 const port = 3000
 
@@ -20,6 +21,9 @@ app.get('/', (req, res) => {
 
 // utilizzo le rotte della risorsa posts e inizializzo il prefisso /posts per tutte le rotte
 app.use('/posts', postsRouter)
+
+// uso il middleware di errore globalmente e dopo tutte le rotte
+app.use(errorsHandler)
 
 // metto il mio server in ascolto della porta
 app.listen(port, () => {
