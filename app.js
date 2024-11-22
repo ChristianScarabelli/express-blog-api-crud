@@ -20,6 +20,7 @@ app.use(trimStrings)
 
 // creo la rotta principale del mio server
 app.get('/', (req, res) => {
+    // throw new Error('Errore finto')
     res.send('server del mio blog')
 })
 

@@ -35,11 +35,12 @@ const index = (req, res) => {
 // funzione rotta show => visualizzare un elemento 
 const show = (req, res) => {
     const param = req.params.id // salvo in una variabile il parametro, che può essere sia ID che slug
-    const id = parseInt(param)      // recupero in una variabile il parametro del post richiesto trasformato in numero
 
     console.log(`Ecco il post con parametro: ${param}`)
 
     let post      // inizializzo una variabile che cambierà e verrà ritornata in json in base alla ricerca
+
+    const id = parseInt(param); // Converto il parametro in un numero
 
     if (!isNaN(id) && id > 0) {    // se il parametro scritto è un numero valido cerco per id
         post = posts.find((post) => post.id === id)  // cerco nell'array posts l'elemento post con ID uguale a quello della richiesta con query string
@@ -47,14 +48,13 @@ const show = (req, res) => {
         post = posts.find((post) => post.slug === param)
     }
 
-    if (!post) {        // se il post non esiste
-        console.log('post non trovato')
-
-        res.status(404).json({      // se non esiste ritorno un json con gli errori
+    if (!post) { // Se il post non è stato trovato
+        return res.status(404).json({
             error: 'Post not found',
-            message: 'Il post non è stato trovato'
+            message: 'Il post non è stato trovato',
         })
     }
+
     res.json(post)    // ritorno un json con l'elemento post selezionato per id o per slug, altrimenti ritorno l'errore
 }
 
@@ -92,7 +92,6 @@ const store = (req, res) => {
 
 // funzione rotta update => modificare interamente un elemento
 const update = (req, res) => {
-    const id = parseInt(req.params.id)
     // res.send(`Modifico interamente il post con id: ${id}`)
     const errors = validateData(req)     // validazione
 
@@ -105,57 +104,35 @@ const update = (req, res) => {
         })
     }
 
-    const post = posts.find((post) => post.id === id)  // cerco il post con id corrispondente al parametro ricevuto
-
-    if (!post) {     // se il post non esiste, ritorno l'errore
-        res.status(404)
-
-        return res.json({
-            error: 'post not found',
-            message: 'Post not found.',
-        })
-    }
-
     // validazione dati del body
     // update del post con i dati della body request
     const { title, slug, content, image, tags } = req.body
 
-    post.title = title   // se il parametro title esiste, il title del post sarà il title passato nella request
-    post.slug = slug
-    post.content = content
-    post.image = image
-    post.tags = tags
+    req.post.title = title   // se il parametro title esiste, il title del post sarà il title passato nella request
+    req.post.slug = slug
+    req.post.content = content
+    req.post.image = image
+    req.post.tags = tags
 
-    res.json(post)      // rispondo con il json del nuovo post
+    res.json(req.post)      // rispondo con il json del nuovo post
 }
 
 // funzione rotta modify => modificare parzialmente un elemento
 const modify = (req, res) => {
-    const id = parseInt(req.params.id)
     // res.send(`Modifico parzialmente il post con id: ${id}`)
 
-    const post = posts.find((post) => post.id === id)  // cerco il post con id corrispondente al parametro ricevuto
-
-    if (!post) {     // se il post non esiste, ritorno l'errore
-        res.status(404)
-
-        return res.json({
-            error: 'post not found',
-            message: 'Post not founded.',
-        })
-    }
 
     // validazione dati del body
     // update del post con i dati della body request
     const { title, slug, content, image, tags } = req.body
 
-    if (title) post.title = title   // se il parametro title esiste, il title del post sarà il title passato nella request, perchè possono arrivare dati parziali e si corre il rischio di undefined
-    if (slug) post.slug = slug
-    if (content) post.content = content
-    if (image) post.image = image
-    if (tags) post.tags = tags
+    if (title) req.post.title = title   // se il parametro title esiste, il title del post sarà il title passato nella request, perchè possono arrivare dati parziali e si corre il rischio di undefined
+    if (slug) req.post.slug = slug
+    if (content) req.post.content = content
+    if (image) req.post.image = image
+    if (tags) req.post.tags = tags
 
-    res.json(post)      // rispondo con il json del nuovo post
+    res.json(req.post)      // rispondo con il json del nuovo post
 }
 
 // funzione rotta destroy => eliminare un elemento

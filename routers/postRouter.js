@@ -1,10 +1,14 @@
 const express = require('express')      // importo express
 const router = express.Router()         // inizializzo la funzione router di express
 const postController = require('../controllers/postController.js')      // importo le funzioni delle rotte
+const validateResourceWithId = require('../middlewares/validateResource.js')    // importo il middleware di controllo quì nel router, dove verrà usato su tutte le rotte
 
 // operazioni CRUD secondo convenzioni REST della risorsa posts
 // a cui passo le funzioni controller della risorsa post
 // PREFIX /posts
+
+// utilizzo il middleware di controllo
+router.use(validateResourceWithId)
 
 // rotta Index => visualizzare tutti gli elementi
 router.get('/', postController.index)
