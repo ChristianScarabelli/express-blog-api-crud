@@ -61,18 +61,6 @@ const show = (req, res) => {
 // funzione rotta store => creare un nuovo elemento
 const store = (req, res) => {
     const { title, slug, content, image, tags } = req.body   // destrutturo in una variabile i dati in arrivo con la body request
-    // console.log(req.body)
-
-    const errors = validateData(req) // Validazione
-
-    if (errors.length > 0) {  // se l'array di stringhe di errori non è vuoto, c'è l'errore e lo imposto
-        res.status(400)
-
-        return res.json({
-            error: 'Invalid request',
-            messages: errors,
-        })
-    }
 
     lastIndex++     // incremento l'id così al nuovo oggetto ne verrà assegnato uno in sequenza
 
@@ -93,16 +81,6 @@ const store = (req, res) => {
 // funzione rotta update => modificare interamente un elemento
 const update = (req, res) => {
     // res.send(`Modifico interamente il post con id: ${id}`)
-    const errors = validateData(req)     // validazione
-
-    if (errors.length > 0) {
-        res.status(400)
-
-        return res.json({
-            error: 'invalid request!',
-            message: errors
-        })
-    }
 
     // validazione dati del body
     // update del post con i dati della body request
@@ -167,37 +145,3 @@ const destroy = (req, res) => {
 }
 
 module.exports = { index, show, store, update, modify, destroy }
-
-
-// funzione per validare i dati, che prende come parametro la request
-const validateData = (req) => {
-    const { title, slug, content, image, tags } = req.body
-
-    let errors = []
-
-    // se i vari parametri non esistono, sono diversi da stringhe, hanno spazio ai lati o  sono campi vuoti,
-    // creo l'errore e lo pusho nell'array vuoto di errori
-    if (!title || typeof title !== 'string') {
-        errors.push('title is required')
-    }
-
-    if (!slug || typeof slug !== 'string') {
-        errors.push('slug is required')
-    }
-
-    if (!content || typeof content !== 'string') {
-        errors.push('content is required')
-    }
-
-    if (!image || typeof image !== 'string') {
-        errors.push('image is required')
-    }
-
-    // se l'array di tags non è un array
-    // se ogni tag dell'array tags è diverso da stringa
-    if (!tags || !Array.isArray(tags) || tags.length === 0 || !tags.every(tag => typeof tag === 'string')) {
-        errors.push('tags are required');
-    }
-
-    return errors
-}
