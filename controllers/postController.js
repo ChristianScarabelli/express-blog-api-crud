@@ -74,7 +74,7 @@ const store = (req, res) => {
     }
 
     posts.push(newPost)     // aggiungo il nuovo post all'array principale
-    res.status(201).send(newPost)       // invio status positivo e il nuovo post
+    res.status(201).json(newPost)       // invio status positivo e il nuovo post
     // console.log(newPost)
 }
 

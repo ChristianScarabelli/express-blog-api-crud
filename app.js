@@ -1,6 +1,5 @@
 // console.log('API CRUD')
 
-
 const express = require('express')      // richiamo express
 const postsRouter = require('./routers/postRouter.js')      // importo il router delle rotte della risorsa posts
 const errorsHandler = require('./middlewares/errorsHandler.js')  // importo il middleware di gestione degli errori
@@ -8,7 +7,11 @@ const notFound = require('./middlewares/notFound.js')  // importo il middleware 
 const trimStrings = require('./middlewares/trimStrings.js')
 const app = express()
 const port = 3000
+const cors = require('cors')  // importo il middleware cors, per poter gestire le richieste che arrivano da origine diversa
 
+
+// uso cors
+app.use(cors())
 
 // rendo accessibile al server la directory 'public'
 app.use(express.static('public'))
