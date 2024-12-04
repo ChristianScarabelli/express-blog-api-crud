@@ -60,13 +60,13 @@ const show = (req, res) => {
 
 // funzione rotta store => creare un nuovo elemento
 const store = (req, res) => {
-    const { title, slug, content, image, tags } = req.body   // destrutturo in una variabile i dati in arrivo con la body request
+    const { title, author, content, image, tags } = req.body   // destrutturo in una variabile i dati in arrivo con la body request
 
     lastIndex++     // incremento l'id così al nuovo oggetto ne verrà assegnato uno in sequenza
 
     const newPost = {
         title,
-        slug,
+        author,
         id: lastIndex,      // associo alla proprietà id il valore incrementato 
         content,
         image,
@@ -84,10 +84,10 @@ const update = (req, res) => {
 
     // validazione dati del body
     // update del post con i dati della body request
-    const { title, slug, content, image, tags } = req.body
+    const { title, author, content, image, tags } = req.body
 
     req.post.title = title   // se il parametro title esiste, il title del post sarà il title passato nella request
-    req.post.slug = slug
+    req.post.author = author
     req.post.content = content
     req.post.image = image
     req.post.tags = tags
@@ -102,10 +102,10 @@ const modify = (req, res) => {
 
     // validazione dati del body
     // update del post con i dati della body request
-    const { title, slug, content, image, tags } = req.body
+    const { title, author, content, image, tags } = req.body
 
     if (title) req.post.title = title   // se il parametro title esiste, il title del post sarà il title passato nella request, perchè possono arrivare dati parziali e si corre il rischio di undefined
-    if (slug) req.post.slug = slug
+    if (author) req.post.author = author
     if (content) req.post.content = content
     if (image) req.post.image = image
     if (tags) req.post.tags = tags

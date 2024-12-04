@@ -1,6 +1,6 @@
 // middleware per errore di richiesta non valida ,con parametro request
 const validateData = (req, res, next) => {
-    const { title, slug, content, image, tags } = req.body
+    const { title, author, content, tags } = req.body  // image
 
     let errors = []
 
@@ -10,17 +10,17 @@ const validateData = (req, res, next) => {
         errors.push('title is required')
     }
 
-    if (!slug || typeof slug !== 'string') {
-        errors.push('slug is required')
+    if (!author || typeof author !== 'string') {
+        errors.push('author is required')
     }
 
     if (!content || typeof content !== 'string') {
         errors.push('content is required')
     }
 
-    if (!image || typeof image !== 'string') {
-        errors.push('image is required')
-    }
+    // if (!image || typeof image !== 'string') {
+    //     errors.push('image is required')
+    // }
 
     // se l'array di tags non è un array
     // se ogni tag dell'array tags è diverso da stringa
