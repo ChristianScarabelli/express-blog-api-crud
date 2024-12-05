@@ -60,7 +60,7 @@ const show = (req, res) => {
 
 // funzione rotta store => creare un nuovo elemento
 const store = (req, res) => {
-    const { title, author, content, image, tags } = req.body   // destrutturo in una variabile i dati in arrivo con la body request
+    const { title, author, content, image, tags, published } = req.body   // destrutturo in una variabile i dati in arrivo con la body request
 
     lastIndex++     // incremento l'id così al nuovo oggetto ne verrà assegnato uno in sequenza
 
@@ -70,6 +70,7 @@ const store = (req, res) => {
         id: lastIndex,      // associo alla proprietà id il valore incrementato 
         content,
         image,
+        published,
         tags
     }
 
